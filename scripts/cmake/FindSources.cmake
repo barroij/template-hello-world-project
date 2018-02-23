@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.8)
+
+# Set each source file proper source group
+macro(set_source_groups pList)
+	foreach(FilePath ${pList})
+		get_filename_component(DirName ${FilePath} DIRECTORY)
+		if( NOT "${DirName}" STREQUAL "" )
+			string(REGEX REPLACE "[.][.][/]" "" GroupName "${DirName}")
+			string(REGEX REPLACE "/" "\\\\" GroupName "${GroupName}")
+			source_group("${GroupName}" FILES ${FilePath})
+		else()
+			source_group("" FILES ${FilePath})
+		endif()
+	endforeach()
+endmacro()
+
+# Get all source files recursively and add them to pResult
+macro(find_source_files pResult searchDir)
+	# message(STATUS "searchDir = ${searchDir}")
+	set(FileList)
+	set(FileExtensions)
+	set(UpdatedFileExtensions)
+
+	list(APPEND FileExtensions "*.h" "*.c" "*.cpp" "*.inl")
+	foreach(FileExtension ${FileExtensions})
+		list(APPEND UpdatedFileExtensions "${searchDir}/${FileExtension}")
+	endforeach()
+	file(GLOB_RECURSE FileList RELATIVE ${PROJECT_SOURCE_DIR} ${UpdatedFileExtensions})
+	list(APPEND ${pResult} ${FileList})
+	set_source_groups("${FileList}")
+endmacro()

@@ -1,0 +1,5 @@
+# install requirements with using `py -3 -m pip install -r scripts/requirements.txt` on windows. Otherwise, use `python3` instead of `py -3`.
+autopep8>=1.3.2   # used to format python code
+pylint>=1.7.2     # used to verify python code
+requests>=2.18.4  # used by `pie package`
+psutil>=5.4.3
